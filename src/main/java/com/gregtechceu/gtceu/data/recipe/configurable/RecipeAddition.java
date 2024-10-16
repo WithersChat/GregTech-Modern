@@ -167,6 +167,33 @@ public class RecipeAddition {
 
         VanillaRecipeHelper.addShapedRecipe(provider, "iron_bucket", new ItemStack(Items.BUCKET), "XhX", " X ", 'X',
                 new UnificationEntry(TagPrefix.plate, GTMaterials.Iron));
+
+        VanillaRecipeHelper.addShapedRecipe(provider, "chain_iron", new ItemStack(Items.CHAIN), " R ",
+                "wR ", " R ",
+                'R', new UnificationEntry(ring, Iron));
+
+        ASSEMBLER_RECIPES.recipeBuilder("chain_iron")
+                .inputItems(ring, Iron, 3)
+                .outputItems(new ItemStack(Items.CHAIN, 2))
+                .duration(40).EUt(10).save(provider);
+
+        VanillaRecipeHelper.addShapedRecipe(provider, "chain_wrought_iron", new ItemStack(Items.CHAIN, 2), " R ",
+                "wR ", " R ",
+                'R', new UnificationEntry(ring, WroughtIron));
+
+        ASSEMBLER_RECIPES.recipeBuilder("chain_wrought_iron")
+                .inputItems(ring, WroughtIron, 3)
+                .outputItems(new ItemStack(Items.CHAIN, 3))
+                .duration(40).EUt(10).save(provider);
+
+        VanillaRecipeHelper.addShapedRecipe(provider, "chain_steel", new ItemStack(Items.CHAIN, 3), " R ",
+                "wR ", " R ",
+                'R', new UnificationEntry(ring, Steel));
+
+        ASSEMBLER_RECIPES.recipeBuilder("chain_steel")
+                .inputItems(ring, Steel, 3)
+                .outputItems(new ItemStack(Items.CHAIN, 6))
+                .duration(40).EUt(10).save(provider);
     }
 
     private static void hardRedstoneRecipes(RecipeOutput provider) {
@@ -713,6 +740,11 @@ public class RecipeAddition {
         }
     }
 
+    /**
+     * Replaces recipes for items that don't fit in any other config option.
+     * Vanilla items go here only if they not fit the criteria for removeVanillaBlockRecipes,
+     * disableManualCompression, or any of the other config options
+     */
     private static void hardMiscRecipes(RecipeOutput provider) {
         if (ConfigHolder.INSTANCE.recipes.hardMiscRecipes) {
             VanillaRecipeHelper.addShapedRecipe(provider, "beacon", new ItemStack(Blocks.BEACON), "GLG", "GSG", "OOO",
@@ -721,7 +753,7 @@ public class RecipeAddition {
                     'S', new ItemStack(Items.NETHER_STAR),
                     'O', new UnificationEntry(TagPrefix.plate, GTMaterials.Obsidian));
 
-            VanillaRecipeHelper.addShapedRecipe(provider, "lit_pumpkin", new ItemStack(Blocks.JACK_O_LANTERN), "PT",
+            VanillaRecipeHelper.addShapedRecipe(provider, "jack_o_lantern", new ItemStack(Blocks.JACK_O_LANTERN), "PT",
                     "k ",
                     'P', new ItemStack(Blocks.PUMPKIN),
                     'T', new ItemStack(Blocks.TORCH));
@@ -877,12 +909,6 @@ public class RecipeAddition {
                     .inputItems(ring, Iron, 4)
                     .outputItems(new ItemStack(Blocks.SOUL_LANTERN))
                     .duration(100).EUt(1).save(provider);
-
-            ALLOY_SMELTER_RECIPES.recipeBuilder("tinted_glass")
-                    .inputItems(new ItemStack(Blocks.GLASS))
-                    .inputItems(new ItemStack(Items.AMETHYST_SHARD, 4))
-                    .outputItems(new ItemStack(Blocks.TINTED_GLASS, 2))
-                    .duration(80).EUt(6).save(provider); // eut may need rebalancing
 
             VanillaRecipeHelper.addShapedRecipe(provider, "stonecutter", new ItemStack(Blocks.STONECUTTER), "f d",
                     "SBS", "XXX",
@@ -1139,33 +1165,6 @@ public class RecipeAddition {
             // 'L', new ItemStack(Items.CRYING_OBSIDIAN),
             // 'G', new UnificationEntry(plate, Glowstone));
 
-            VanillaRecipeHelper.addShapedRecipe(provider, "chain_iron", new ItemStack(Items.CHAIN), " R ",
-                    "wR ", " R ",
-                    'R', new UnificationEntry(ring, Iron));
-
-            ASSEMBLER_RECIPES.recipeBuilder("chain_iron")
-                    .inputItems(ring, Iron, 3)
-                    .outputItems(new ItemStack(Items.CHAIN, 2))
-                    .duration(40).EUt(10).save(provider);
-
-            VanillaRecipeHelper.addShapedRecipe(provider, "chain_wrought_iron", new ItemStack(Items.CHAIN, 2), " R ",
-                    "wR ", " R ",
-                    'R', new UnificationEntry(ring, WroughtIron));
-
-            ASSEMBLER_RECIPES.recipeBuilder("chain_wrought_iron")
-                    .inputItems(ring, WroughtIron, 3)
-                    .outputItems(new ItemStack(Items.CHAIN, 3))
-                    .duration(40).EUt(10).save(provider);
-
-            VanillaRecipeHelper.addShapedRecipe(provider, "chain_steel", new ItemStack(Items.CHAIN, 3), " R ",
-                    "wR ", " R ",
-                    'R', new UnificationEntry(ring, Steel));
-
-            ASSEMBLER_RECIPES.recipeBuilder("chain_steel")
-                    .inputItems(ring, Steel, 3)
-                    .outputItems(new ItemStack(Items.CHAIN, 4))
-                    .duration(40).EUt(10).save(provider);
-
             for (DyeColor color : DyeColor.values()) {
                 addBedRecipe(provider, color);
                 addCarpetRecipe(provider, color);
@@ -1271,6 +1270,12 @@ public class RecipeAddition {
     private static void hardGlassRecipes(RecipeOutput provider) {
         VanillaRecipeHelper.addShapedRecipe(provider, "glass_pane", new ItemStack(Blocks.GLASS_PANE, 2), "sG", 'G',
                 new ItemStack(Blocks.GLASS));
+
+        ALLOY_SMELTER_RECIPES.recipeBuilder("tinted_glass")
+                .inputItems(new ItemStack(Blocks.GLASS))
+                .inputItems(new ItemStack(Items.AMETHYST_SHARD, 4))
+                .outputItems(new ItemStack(Blocks.TINTED_GLASS, 2))
+                .duration(80).EUt(6).save(provider);
     }
 
     private static void nerfPaperCrafting(RecipeOutput provider) {
