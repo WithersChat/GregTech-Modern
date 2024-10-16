@@ -263,7 +263,7 @@ public class RecipeRemoval {
             registry.accept(ResourceLocation.withDefaultNamespace(
                     String.format("%s_stained_glass_pane", color.name().toLowerCase(Locale.ROOT))));
         }
-        registry.accept(ResourceLocation.withDefaultNamespace("minecraft:tinted_glass"));
+        registry.accept(ResourceLocation.withDefaultNamespace("tinted_glass"));
     }
 
     private static void nerfPaperCrafting(Consumer<ResourceLocation> registry) {
