@@ -7,6 +7,7 @@ import com.gregtechceu.gtceu.utils.FormattingUtil;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -28,9 +29,9 @@ public class BatteryBlock extends AppearanceBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
+    public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext context, List<Component> tooltip,
                                 TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
         if (this.data.getTier() == -1) {
             tooltip.add(Component.translatable("block.gtceu.substation_capacitor.tooltip_empty"));
         } else {

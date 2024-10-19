@@ -75,6 +75,7 @@ public class RecipeLogic extends MachineTrait implements IEnhancedManaged, IWork
     @Nullable
     @Getter
     @Persisted
+    @DescSynced
     protected GTRecipe lastRecipe;
     /**
      * safe, it is the original recipe before
@@ -285,7 +286,7 @@ public class RecipeLogic extends MachineTrait implements IEnhancedManaged, IWork
         }
     }
 
-    protected Iterator<GTRecipe> searchRecipe() {
+    public Iterator<GTRecipe> searchRecipe() {
         return machine.getRecipeType().searchRecipe(this.machine);
     }
 
