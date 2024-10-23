@@ -10,7 +10,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import static com.gregtechceu.gtceu.data.block.GTBlocks.createActiveCasing;
 import static com.gregtechceu.gtceu.data.block.GTBlocks.createCasingBlock;
 
-public class GCyMBlocks {
+public class GCYMBlocks {
 
     public static void init() {}
 

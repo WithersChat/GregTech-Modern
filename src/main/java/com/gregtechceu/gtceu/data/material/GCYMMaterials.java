@@ -9,7 +9,7 @@ import static com.gregtechceu.gtceu.api.material.material.info.MaterialFlags.*;
 import static com.gregtechceu.gtceu.api.material.material.info.MaterialIconSet.*;
 import static com.gregtechceu.gtceu.data.material.GTMaterials.*;
 
-public class GCyMMaterials {
+public class GCYMMaterials {
 
     public static void register() {
         TantalumCarbide = new Material.Builder(GTCEu.id("tantalum_carbide"))

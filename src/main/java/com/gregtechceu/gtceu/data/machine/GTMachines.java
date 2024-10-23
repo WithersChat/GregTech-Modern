@@ -2767,7 +2767,7 @@ public class GTMachines {
     }
 
     public static void init() {
-        GCyMMachines.init();
+        GCYMMachines.init();
         GTResearchMachines.init();
 
         if (GTCEu.isCreateLoaded()) {
