@@ -560,7 +560,7 @@ public class ItemRecipeCapability extends RecipeCapability<SizedIngredient> {
                     }
                 });
                 if (io == IO.IN &&
-                        this.of(content.content).ingredient().getCustomIngredient() instanceof IntCircuitIngredient) {
+                       (content.chance == 0 || this.of(content.content).ingredient().getCustomIngredient() instanceof IntCircuitIngredient)) {
                     slot.setIngredientIO(IngredientIO.CATALYST);
                 }
             }
