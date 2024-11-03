@@ -5,10 +5,7 @@ import com.gregtechceu.gtceu.api.cover.CoverBehavior;
 import com.gregtechceu.gtceu.api.cover.CoverDefinition;
 import com.gregtechceu.gtceu.api.cover.IUICover;
 import com.gregtechceu.gtceu.api.cover.filter.FluidFilter;
-import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.EnumSelectorWidget;
-import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
-import com.gregtechceu.gtceu.api.transfer.fluid.FluidTransferDelegate;
 import com.gregtechceu.gtceu.api.transfer.fluid.FluidHandlerDelegate;
 import com.gregtechceu.gtceu.api.transfer.fluid.IFluidHandlerModifiable;
 
@@ -123,7 +120,7 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
             if ((filterMode == FilterMode.FILTER_INSERT) && allowFlow == ManualIOMode.UNFILTERED)
                 return super.drain(resource, action);
             if(filterMode != FilterMode.FILTER_INSERT && getFluidFilter().test(resource))
-                return super.drain(resource, action)
+                return super.drain(resource, action);
             return FluidStack.EMPTY;
         }
     }
