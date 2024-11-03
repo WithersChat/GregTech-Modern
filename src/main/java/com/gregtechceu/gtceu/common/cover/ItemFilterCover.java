@@ -7,6 +7,10 @@ import com.gregtechceu.gtceu.api.cover.IUICover;
 import com.gregtechceu.gtceu.api.cover.filter.ItemFilter;
 import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.EnumSelectorWidget;
+import com.gregtechceu.gtceu.api.transfer.item.ItemHandlerDelegate;
+import com.gregtechceu.gtceu.common.cover.data.FilterMode;
+import com.gregtechceu.gtceu.common.cover.data.ItemFilterMode;
+import com.gregtechceu.gtceu.utils.GTTransferUtils;
 import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
 import com.gregtechceu.gtceu.api.transfer.item.ItemTransferDelegate;
 import com.gregtechceu.gtceu.common.cover.data.FilterMode;
@@ -14,8 +18,6 @@ import com.gregtechceu.gtceu.common.cover.data.FilterMode;
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
 import com.lowdragmc.lowdraglib.gui.widget.Widget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
-import com.lowdragmc.lowdraglib.side.item.IItemTransfer;
-import com.lowdragmc.lowdraglib.side.item.ItemTransferHelper;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
@@ -24,6 +26,7 @@ import lombok.Setter;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +51,7 @@ public class ItemFilterCover extends CoverBehavior implements IUICover {
     @DescSynced
     @Getter
     protected FilterMode filterMode = FilterMode.FILTER_INSERT;
-    private FilteredItemTransferWrapper itemFilterWrapper;
+    private FilteredItemHandlerWrapper itemFilterWrapper;
     @Setter
     @Getter
     protected boolean allowFlow = false;
@@ -71,16 +74,16 @@ public class ItemFilterCover extends CoverBehavior implements IUICover {
 
     @Override
     public boolean canAttach() {
-        return ItemTransferHelper.getItemTransfer(coverHolder.getLevel(), coverHolder.getPos(), attachedSide) != null;
+        return GTTransferUtils.getItemHandler(coverHolder.getLevel(), coverHolder.getPos(), attachedSide).isPresent();
     }
 
     @Override
-    public @Nullable IItemTransfer getItemTransferCap(IItemTransfer defaultValue) {
+    public @Nullable IItemHandlerModifiable getItemHandlerCap(IItemHandlerModifiable defaultValue) {
         if (defaultValue == null) {
             return null;
         }
         if (itemFilterWrapper == null || itemFilterWrapper.delegate != defaultValue) {
-            this.itemFilterWrapper = new ItemFilterCover.FilteredItemTransferWrapper(defaultValue);
+            this.itemFilterWrapper = new FilteredItemHandlerWrapper(defaultValue);
         }
         return itemFilterWrapper;
     }
@@ -101,36 +104,32 @@ public class ItemFilterCover extends CoverBehavior implements IUICover {
         return MANAGED_FIELD_HOLDER;
     }
 
-    private class FilteredItemTransferWrapper extends ItemTransferDelegate {
+    private class FilteredItemHandlerWrapper extends ItemHandlerDelegate {
 
-        public FilteredItemTransferWrapper(IItemTransfer delegate) {
+        public FilteredItemHandlerWrapper(IItemHandlerModifiable delegate) {
             super(delegate);
         }
 
         @Override
-        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate,
-                                             boolean notifyChanges) {
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
             if ((filterMode == FilterMode.FILTER_EXTRACT) && allowFlow)
-                return super.insertItem(slot, stack, simulate, notifyChanges);
-
+                return super.insertItem(slot, stack, simulate);
             if (filterMode != FilterMode.FILTER_EXTRACT && getItemFilter().test(stack)) {
-                super.insertItem(slot, stack, simulate, notifyChanges);
+                return super.insertItem(slot, stack, simulate);
             }
-
             return stack;
         }
 
         @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate, boolean notifyChanges) {
-            ItemStack result = super.extractItem(slot, amount, true, notifyChanges);
-            if (!result.isEmpty() && (filterMode == FilterMode.FILTER_INSERT) && allowFlow) {
-                return super.extractItem(slot, amount, false, notifyChanges);
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            ItemStack result = super.extractItem(slot, amount, true);
+            if (result.isEmpty() && (filterMode == FilterMode.FILTER_INSERT) && allowFlow) {
+                return super.extractItem(slot, amount, false);
             }
 
             if(filterMode != FilterMode.FILTER_INSERT && getItemFilter().test(result)) {
-                return super.extractItem(slot, amount, false, notifyChanges);
+                return super.extractItem(slot, amount, false);
             }
-
             return ItemStack.EMPTY;
         }
     }

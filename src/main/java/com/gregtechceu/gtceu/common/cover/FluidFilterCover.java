@@ -9,15 +9,14 @@ import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.EnumSelectorWidget;
 import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
 import com.gregtechceu.gtceu.api.transfer.fluid.FluidTransferDelegate;
+import com.gregtechceu.gtceu.api.transfer.fluid.FluidHandlerDelegate;
+import com.gregtechceu.gtceu.api.transfer.fluid.IFluidHandlerModifiable;
 
 import com.gregtechceu.gtceu.common.cover.data.FilterMode;
 import com.gregtechceu.gtceu.common.cover.data.ManualIOMode;
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
 import com.lowdragmc.lowdraglib.gui.widget.Widget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
-import com.lowdragmc.lowdraglib.side.fluid.FluidStack;
-import com.lowdragmc.lowdraglib.side.fluid.FluidTransferHelper;
-import com.lowdragmc.lowdraglib.side.fluid.IFluidTransfer;
 
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
@@ -26,6 +25,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +48,7 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
     @DescSynced
     @Getter
     protected FilterMode filterMode = FilterMode.FILTER_INSERT;
-    private FilteredFluidTransferWrapper fluidFilterWrapper;
+    private FilteredFluidHandlerWrapper fluidFilterWrapper;
     @Setter
     @Getter
     protected ManualIOMode allowFlow = ManualIOMode.DISABLED;
@@ -63,7 +64,7 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
 
     @Override
     public boolean canAttach() {
-        return FluidTransferHelper.getFluidTransfer(coverHolder.getLevel(), coverHolder.getPos(), attachedSide) != null;
+        return FluidUtil.getFluidHandler(coverHolder.getLevel(), coverHolder.getPos(), attachedSide).isPresent();
     }
 
     public FluidFilter getFluidFilter() {
@@ -74,13 +75,13 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
     }
 
     @Override
-    public @Nullable IFluidTransfer getFluidTransferCap(@Nullable IFluidTransfer defaultValue) {
+    public @Nullable IFluidHandlerModifiable getFluidHandlerCap(@Nullable IFluidHandlerModifiable defaultValue) {
         if (defaultValue == null) {
             return null;
         }
 
         if (fluidFilterWrapper == null || fluidFilterWrapper.delegate != defaultValue) {
-            this.fluidFilterWrapper = new FilteredFluidTransferWrapper(defaultValue);
+            this.fluidFilterWrapper = new FilteredFluidHandlerWrapper(defaultValue);
         }
 
         return fluidFilterWrapper;
@@ -102,28 +103,28 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
         return MANAGED_FIELD_HOLDER;
     }
 
-    private class FilteredFluidTransferWrapper extends FluidTransferDelegate {
+    private class FilteredFluidHandlerWrapper extends FluidHandlerDelegate {
 
-        public FilteredFluidTransferWrapper(IFluidTransfer delegate) {
+        public FilteredFluidHandlerWrapper(IFluidHandlerModifiable delegate) {
             super(delegate);
         }
 
         @Override
-        public long fill(int tank, FluidStack resource, boolean simulate, boolean notifyChanges) {
+        public int fill(FluidStack resource, FluidAction action) {
             if ((filterMode == FilterMode.FILTER_EXTRACT) && allowFlow == ManualIOMode.UNFILTERED)
-                return super.fill(tank, resource, simulate, notifyChanges);
+                return super.fill(resource, action);
             if(filterMode != FilterMode.FILTER_EXTRACT && getFluidFilter().test(resource))
-                return super.fill(tank, resource, simulate, notifyChanges);
+                return super.fill(resource, action);
             return 0;
         }
 
         @Override
-        public FluidStack drain(int tank, FluidStack resource, boolean simulate, boolean notifyChanges) {
+        public FluidStack drain(FluidStack resource, FluidAction action) {
             if ((filterMode == FilterMode.FILTER_INSERT) && allowFlow == ManualIOMode.UNFILTERED)
-                return super.drain(tank, resource, simulate, notifyChanges);
+                return super.drain(resource, action);
             if(filterMode != FilterMode.FILTER_INSERT && getFluidFilter().test(resource))
-                return super.drain(tank, resource, simulate, notifyChanges);
-            return FluidStack.empty();
+                return super.drain(resource, action)
+            return FluidStack.EMPTY;
         }
     }
 }
