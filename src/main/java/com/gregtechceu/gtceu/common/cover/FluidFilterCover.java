@@ -110,16 +110,20 @@ public class FluidFilterCover extends CoverBehavior implements IUICover {
 
         @Override
         public long fill(int tank, FluidStack resource, boolean simulate, boolean notifyChanges) {
-            if (filterMode == FilterMode.FILTER_EXTRACT && allowFlow == ManualIOMode.UNFILTERED)
+            if ((filterMode == FilterMode.FILTER_EXTRACT) && allowFlow == ManualIOMode.UNFILTERED)
                 return super.fill(tank, resource, simulate, notifyChanges);
-            return getFluidFilter().test(resource) ? super.fill(tank, resource, simulate, notifyChanges) : 0;
+            if(filterMode != FilterMode.FILTER_EXTRACT && getFluidFilter().test(resource))
+                return super.fill(tank, resource, simulate, notifyChanges);
+            return 0;
         }
 
         @Override
         public FluidStack drain(int tank, FluidStack resource, boolean simulate, boolean notifyChanges) {
-            if (filterMode == FilterMode.FILTER_INSERT && allowFlow == ManualIOMode.UNFILTERED)
+            if ((filterMode == FilterMode.FILTER_INSERT) && allowFlow == ManualIOMode.UNFILTERED)
                 return super.drain(tank, resource, simulate, notifyChanges);
-            return getFluidFilter().test(resource) ? super.drain(tank, resource, simulate, notifyChanges) : FluidStack.empty();
+            if(filterMode != FilterMode.FILTER_INSERT && getFluidFilter().test(resource))
+                return super.drain(tank, resource, simulate, notifyChanges);
+            return FluidStack.empty();
         }
     }
 }

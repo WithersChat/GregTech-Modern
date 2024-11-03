@@ -110,19 +110,28 @@ public class ItemFilterCover extends CoverBehavior implements IUICover {
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate,
                                              boolean notifyChanges) {
-            if (filterMode == FilterMode.FILTER_EXTRACT && allowFlow)
+            if ((filterMode == FilterMode.FILTER_EXTRACT) && allowFlow)
                 return super.insertItem(slot, stack, simulate, notifyChanges);
-            return getItemFilter().test(stack) ? super.insertItem(slot, stack, simulate, notifyChanges) : stack;
+
+            if (filterMode != FilterMode.FILTER_EXTRACT && getItemFilter().test(stack)) {
+                super.insertItem(slot, stack, simulate, notifyChanges);
+            }
+
+            return stack;
         }
 
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate, boolean notifyChanges) {
             ItemStack result = super.extractItem(slot, amount, true, notifyChanges);
-            if (!result.isEmpty() && filterMode == FilterMode.FILTER_INSERT && allowFlow) {
+            if (!result.isEmpty() && (filterMode == FilterMode.FILTER_INSERT) && allowFlow) {
                 return super.extractItem(slot, amount, false, notifyChanges);
             }
-            return simulate ? result :
-                    (!getItemFilter().test(result) ? super.extractItem(slot, amount, false, notifyChanges) : ItemStack.EMPTY);
+
+            if(filterMode != FilterMode.FILTER_INSERT && getItemFilter().test(result)) {
+                return super.extractItem(slot, amount, false, notifyChanges);
+            }
+
+            return ItemStack.EMPTY;
         }
     }
 }
