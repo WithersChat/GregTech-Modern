@@ -14,6 +14,7 @@ import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.common.blockentity.OpticalPipeBlockEntity;
 
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
+
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +37,6 @@ public class OpticalDataHatchMachine extends MultiblockPartMachine implements IO
 
     @Getter
     private final boolean isTransmitter;
-
 
     @Persisted
     protected NotifiableComputationContainer importComputation;

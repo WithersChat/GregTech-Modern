@@ -2,10 +2,12 @@ package com.gregtechceu.gtceu.common.machine.electric;
 
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.capability.IControllable;
+import com.gregtechceu.gtceu.api.capability.IEnergyContainer;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
 import com.gregtechceu.gtceu.api.machine.TieredEnergyMachine;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableEnergyContainer;
 
+import com.gregtechceu.gtceu.api.misc.EnergyContainerList;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.syncdata.annotation.UpdateListener;
@@ -51,6 +53,7 @@ public class TransformerMachine extends TieredEnergyMachine implements IControll
         super(holder, tier);
         this.isWorkingEnabled = true;
         this.baseAmp = baseAmp;
+        this.energyContainer = null;
         this.energyContainer = createEnergyContainer(baseAmp);
     }
 
@@ -69,14 +72,14 @@ public class TransformerMachine extends TieredEnergyMachine implements IControll
     }
 
     protected NotifiableEnergyContainer createEnergyContainer(int amp) {
-        NotifiableEnergyContainer energyContainer;
+        NotifiableEnergyContainer e;
         long tierVoltage = GTValues.V[getTier()];
         // Since this.baseAmp is not yet initialized, we substitute with 1A as default
-        energyContainer = new NotifiableEnergyContainer(this, tierVoltage * 8L, tierVoltage * 4, amp, tierVoltage,
+        e = new NotifiableEnergyContainer(this, tierVoltage * 8L, tierVoltage * 4, amp, tierVoltage,
                 4L * amp);
-        energyContainer.setSideInputCondition(s -> s == getFrontFacing() && isWorkingEnabled());
-        energyContainer.setSideOutputCondition(s -> s != getFrontFacing() && isWorkingEnabled());
-        return energyContainer;
+        e.setSideInputCondition(s -> s == getFrontFacing() && isWorkingEnabled());
+        e.setSideOutputCondition(s -> s != getFrontFacing() && isWorkingEnabled());
+        return e;
     }
 
     @Override
