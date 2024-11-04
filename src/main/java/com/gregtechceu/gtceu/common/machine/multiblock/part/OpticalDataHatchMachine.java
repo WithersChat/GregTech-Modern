@@ -4,13 +4,16 @@ import com.gregtechceu.gtceu.api.capability.IDataAccessHatch;
 import com.gregtechceu.gtceu.api.capability.IOpticalDataAccessHatch;
 import com.gregtechceu.gtceu.api.capability.IWorkable;
 import com.gregtechceu.gtceu.api.capability.forge.GTCapability;
+import com.gregtechceu.gtceu.api.capability.recipe.IO;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
 import com.gregtechceu.gtceu.api.machine.feature.multiblock.IMultiController;
 import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
 import com.gregtechceu.gtceu.api.machine.multiblock.part.MultiblockPartMachine;
+import com.gregtechceu.gtceu.api.machine.trait.NotifiableComputationContainer;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.common.blockentity.OpticalPipeBlockEntity;
 
+import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -34,9 +37,26 @@ public class OpticalDataHatchMachine extends MultiblockPartMachine implements IO
     @Getter
     private final boolean isTransmitter;
 
+
+    @Persisted
+    protected NotifiableComputationContainer importComputation;
+    @Persisted
+    protected NotifiableComputationContainer exportComputation;
+
     public OpticalDataHatchMachine(IMachineBlockEntity holder, boolean isTransmitter) {
         super(holder);
         this.isTransmitter = isTransmitter;
+
+        importComputation = createImportComputationContainer(isTransmitter);
+        exportComputation = createExportComputationContainer();
+    }
+
+    protected NotifiableComputationContainer createImportComputationContainer(boolean transmitter) {
+        return new NotifiableComputationContainer(this, IO.IN, transmitter);
+    }
+
+    protected NotifiableComputationContainer createExportComputationContainer() {
+        return new NotifiableComputationContainer(this, IO.OUT, false);
     }
 
     @Override

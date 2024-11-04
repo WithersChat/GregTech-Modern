@@ -62,10 +62,6 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     protected NotifiableFluidTank importFluids;
     @Persisted
     protected NotifiableFluidTank exportFluids;
-    @Persisted
-    protected NotifiableComputationContainer importComputation;
-    @Persisted
-    protected NotifiableComputationContainer exportComputation;
     @Getter
     protected final Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy;
     @Persisted
@@ -92,8 +88,8 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
         this.exportItems = createExportItemHandler();
         this.importFluids = createImportFluidHandler();
         this.exportFluids = createExportFluidHandler();
-        // this.importComputation = createImportComputationContainer();
-        this.exportComputation = createExportComputationContainer();
+        //this.importComputation = createImportComputationContainer();
+        //this.exportComputation = createExportComputationContainer();
         this.energyContainer = createEnergyContainer();
     }
 
@@ -141,14 +137,6 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     protected NotifiableFluidTank createExportFluidHandler() {
         return new NotifiableFluidTank(this, getRecipeType().getMaxOutputs(FluidRecipeCapability.CAP),
                 this.tankScalingFunction.apply(this.getTier()), IO.OUT);
-    }
-
-    protected NotifiableComputationContainer createImportComputationContainer(boolean transmitter) {
-        return new NotifiableComputationContainer(this, IO.IN, transmitter);
-    }
-
-    protected NotifiableComputationContainer createExportComputationContainer() {
-        return new NotifiableComputationContainer(this, IO.OUT, false);
     }
 
     @Override
