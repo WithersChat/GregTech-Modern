@@ -40,14 +40,13 @@ public class MultiblockTankMachine extends MultiblockControllerMachine implement
     @NotNull
     private final NotifiableFluidTank tank;
 
-    public MultiblockTankMachine(IMachineBlockEntity holder, int capacity, @Nullable PropertyFluidFilter filter,
-                                 Object... args) {
+    public MultiblockTankMachine(IMachineBlockEntity holder, int capacity, @Nullable PropertyFluidFilter filter) {
         super(holder);
 
-        this.tank = createTank(capacity, filter, args);
+        this.tank = createTank(capacity, filter);
     }
 
-    protected NotifiableFluidTank createTank(int capacity, @Nullable PropertyFluidFilter filter, Object... args) {
+    protected NotifiableFluidTank createTank(int capacity, @Nullable PropertyFluidFilter filter) {
         var fluidTank = new NotifiableFluidTank(this, 1, capacity, IO.BOTH);
 
         if (filter != null)

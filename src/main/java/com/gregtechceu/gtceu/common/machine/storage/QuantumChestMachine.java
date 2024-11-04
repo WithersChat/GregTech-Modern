@@ -118,11 +118,11 @@ public class QuantumChestMachine extends TieredMachine implements IAutoOutputIte
     @Getter
     private final CustomItemStackHandler lockedItem;
 
-    public QuantumChestMachine(IMachineBlockEntity holder, int tier, int maxStoredItems, Object... args) {
+    public QuantumChestMachine(IMachineBlockEntity holder, int tier, int maxStoredItems) {
         super(holder, tier);
         this.outputFacingItems = getFrontFacing().getOpposite();
         this.maxStoredItems = maxStoredItems;
-        this.cache = createCacheItemHandler(args);
+        this.cache = createCacheItemHandler();
         this.lockedItem = new CustomItemStackHandler();
     }
 
@@ -135,7 +135,7 @@ public class QuantumChestMachine extends TieredMachine implements IAutoOutputIte
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableItemStackHandler createCacheItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createCacheItemHandler() {
         return new CustomCache(this).setFilter(itemStack -> !isLocked() ||
                 ItemHandlerHelper.canItemStacksStack(lockedItem.getStackInSlot(0), itemStack));
     }

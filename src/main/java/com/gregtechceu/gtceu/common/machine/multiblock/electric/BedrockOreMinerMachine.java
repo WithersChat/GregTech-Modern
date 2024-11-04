@@ -50,13 +50,6 @@ public class BedrockOreMinerMachine extends WorkableElectricMultiblockMachine im
         this.tier = tier;
     }
 
-    /*
-     * @Override
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new BedrockOreMinerLogic(this);
-     * }
-     */
-
     @Override
     public BedrockOreMinerLogic getRecipeLogic() {
         return (BedrockOreMinerLogic) super.getRecipeLogic();

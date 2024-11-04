@@ -45,16 +45,6 @@ public class ConverterMachine extends TieredEnergyMachine {
         return MANAGED_FIELD_HOLDER;
     }
 
-    /*
-     * @Override
-     * protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-     * if (args.length > 0 && args[args.length - 1] instanceof Integer ampsValue) {
-     * return new ConverterTrait(this, ampsValue);
-     * }
-     * throw new IllegalArgumentException("ConverterMachine need args [amps] for initialization");
-     * }
-     */
-
     public ConverterTrait getConverterTrait() {
         return (ConverterTrait) energyContainer;
     }

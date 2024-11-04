@@ -78,13 +78,6 @@ public class BatteryBufferMachine extends TieredEnergyMachine
         return MANAGED_FIELD_HOLDER;
     }
 
-    /*
-     * @Override
-     * protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-     * return new EnergyBatteryTrait((int) args[0]);
-     * }
-     */
-
     protected CustomItemStackHandler createBatteryInventory() {
         var handler = new CustomItemStackHandler(this.inventorySize) {
 

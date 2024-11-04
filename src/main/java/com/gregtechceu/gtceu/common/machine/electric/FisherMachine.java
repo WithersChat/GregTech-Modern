@@ -130,7 +130,7 @@ public class FisherMachine extends TieredEnergyMachine
     private static final ItemStack fishingRod = new ItemStack(Items.FISHING_ROD);
     private boolean hasWater = false;
 
-    public FisherMachine(IMachineBlockEntity holder, int tier, Object... ignoredArgs) {
+    public FisherMachine(IMachineBlockEntity holder, int tier) {
         super(holder, tier);
         this.inventorySize = (tier + 1) * (tier + 1);
         this.maxProgress = 1000 - tier * 200;

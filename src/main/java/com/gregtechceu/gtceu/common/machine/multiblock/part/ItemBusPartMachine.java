@@ -63,7 +63,7 @@ public class ItemBusPartMachine extends TieredIOPartMachine implements IDistinct
 
     public ItemBusPartMachine(IMachineBlockEntity holder, int tier, IO io, Object... args) {
         super(holder, tier, io);
-        this.inventory = createInventory(args);
+        this.inventory = createInventory();
         this.circuitInventory = createCircuitItemHandler(io);
         this.combinedInventory = createCombinedItemHandler(io);
     }
@@ -81,12 +81,12 @@ public class ItemBusPartMachine extends TieredIOPartMachine implements IDistinct
         return sizeRoot * sizeRoot;
     }
 
-    protected NotifiableItemStackHandler createInventory(Object... args) {
+    protected NotifiableItemStackHandler createInventory() {
         return new NotifiableItemStackHandler(this, getInventorySize(), io);
     }
 
-    protected NotifiableItemStackHandler createCircuitItemHandler(Object... args) {
-        if (args.length > 0 && args[0] instanceof IO io && io == IO.IN) {
+    protected NotifiableItemStackHandler createCircuitItemHandler(IO io) {
+        if (io == IO.IN) {
             return new NotifiableItemStackHandler(this, 1, IO.IN, IO.NONE)
                     .setFilter(IntCircuitBehaviour::isIntegratedCircuit);
         } else {
@@ -94,8 +94,8 @@ public class ItemBusPartMachine extends TieredIOPartMachine implements IDistinct
         }
     }
 
-    protected ItemHandlerProxyRecipeTrait createCombinedItemHandler(Object... args) {
-        if (args.length > 0 && args[0] instanceof IO io && io == IO.IN) {
+    protected ItemHandlerProxyRecipeTrait createCombinedItemHandler(IO io) {
+        if (io == IO.IN) {
             return new ItemHandlerProxyRecipeTrait(this, Set.of(getInventory(), circuitInventory), IO.IN, IO.NONE);
         } else {
             return new ItemHandlerProxyRecipeTrait(this, Set.of(getInventory(), circuitInventory), IO.NONE, IO.NONE);

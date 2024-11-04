@@ -111,12 +111,6 @@ public class CleanroomMachine extends WorkableElectricMultiblockMachine
         return MANAGED_FIELD_HOLDER;
     }
 
-    /*
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new CleanroomLogic(this);
-     * }
-     */
-
     @Override
     @NotNull
     public CleanroomLogic getRecipeLogic() {

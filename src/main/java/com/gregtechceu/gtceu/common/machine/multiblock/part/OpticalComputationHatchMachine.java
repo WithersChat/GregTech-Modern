@@ -29,15 +29,8 @@ public class OpticalComputationHatchMachine extends MultiblockPartMachine {
         this.computationContainer = createComputationContainer(transmitter);
     }
 
-    protected NotifiableComputationContainer createComputationContainer(Object... args) {
-        IO io = IO.IN;
-        if (args.length > 1 && args[args.length - 2] instanceof IO newIo) {
-            io = newIo;
-        }
-        if (args.length > 0 && args[args.length - 1] instanceof Boolean transmitter) {
-            return new NotifiableComputationContainer(this, io, transmitter);
-        }
-        throw new IllegalArgumentException();
+    protected NotifiableComputationContainer createComputationContainer(boolean transmitter) {
+        return new NotifiableComputationContainer(this, IO.IN, transmitter);
     }
 
     @Override

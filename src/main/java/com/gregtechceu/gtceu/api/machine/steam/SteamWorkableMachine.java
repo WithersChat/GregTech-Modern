@@ -115,10 +115,6 @@ public abstract class SteamWorkableMachine extends SteamMachine
         }
     }
 
-    protected RecipeLogic createRecipeLogic(@SuppressWarnings("unused") Object... args) {
-        return new RecipeLogic(this);
-    }
-
     @Override
     public void onUnload() {
         super.onUnload();

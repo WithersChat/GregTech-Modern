@@ -51,7 +51,7 @@ public class SteamSolidBoilerMachine extends SteamBoilerMachine implements IMach
     @Persisted
     public final NotifiableItemStackHandler fuelHandler, ashHandler;
 
-    public SteamSolidBoilerMachine(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
+    public SteamSolidBoilerMachine(IMachineBlockEntity holder, boolean isHighPressure) {
         super(holder, isHighPressure);
         this.fuelHandler = createFuelHandler().setFilter(itemStack -> {
             if (FluidUtil.getFluidContained(itemStack).isPresent()) {

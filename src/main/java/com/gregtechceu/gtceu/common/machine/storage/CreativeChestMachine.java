@@ -46,7 +46,7 @@ public class CreativeChestMachine extends QuantumChestMachine {
     }
 
     @Override
-    protected NotifiableItemStackHandler createCacheItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createCacheItemHandler() {
         return new InfiniteStackHandler(this);
     }
 

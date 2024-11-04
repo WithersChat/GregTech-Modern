@@ -88,13 +88,6 @@ public class ChargerMachine extends TieredEnergyMachine implements IControllable
         return MANAGED_FIELD_HOLDER;
     }
 
-    /*
-     * @Override
-     * protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-     * return new EnergyBatteryTrait((int) args[0]);
-     * }
-     */
-
     protected CustomItemStackHandler createChargerInventory() {
         var handler = new CustomItemStackHandler(this.inventorySize);
         handler.setFilter(item -> GTCapabilityHelper.getElectricItem(item) != null ||

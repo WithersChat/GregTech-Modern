@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class SteamItemBusPartMachine extends ItemBusPartMachine {
 
-    public SteamItemBusPartMachine(IMachineBlockEntity holder, IO io, Object... args) {
-        super(holder, 1, io, args);
+    public SteamItemBusPartMachine(IMachineBlockEntity holder, IO io) {
+        super(holder, 1, io);
     }
 
     @NotNull

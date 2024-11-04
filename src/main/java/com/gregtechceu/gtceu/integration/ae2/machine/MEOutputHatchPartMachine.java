@@ -40,8 +40,8 @@ public class MEOutputHatchPartMachine extends MEHatchPartMachine implements IMac
     @Persisted
     private KeyStorage internalBuffer; // Do not use KeyCounter, use our simple implementation
 
-    public MEOutputHatchPartMachine(IMachineBlockEntity holder, Object... args) {
-        super(holder, IO.OUT, args);
+    public MEOutputHatchPartMachine(IMachineBlockEntity holder) {
+        super(holder, IO.OUT);
     }
 
     /////////////////////////////////
@@ -49,7 +49,7 @@ public class MEOutputHatchPartMachine extends MEHatchPartMachine implements IMac
     /////////////////////////////////
 
     @Override
-    protected NotifiableFluidTank createTank(int initialCapacity, int slots, Object... args) {
+    protected NotifiableFluidTank createTank(int initialCapacity, int slots) {
         this.internalBuffer = new KeyStorage();
         return new InaccessibleInfiniteTank(this);
     }

@@ -37,9 +37,9 @@ public class KineticPartMachine extends TieredIOPartMachine implements IKineticM
     @Persisted
     protected final NotifiableStressTrait stressTrait;
 
-    public KineticPartMachine(IMachineBlockEntity holder, int tier, IO io, Object... args) {
+    public KineticPartMachine(IMachineBlockEntity holder, int tier, IO io) {
         super(holder, tier, io);
-        this.stressTrait = createStressTrait(args);
+        this.stressTrait = createStressTrait();
     }
 
     //////////////////////////////////////
@@ -50,7 +50,7 @@ public class KineticPartMachine extends TieredIOPartMachine implements IKineticM
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableStressTrait createStressTrait(Object... args) {
+    protected NotifiableStressTrait createStressTrait() {
         return new NotifiableStressTrait(this, this.io, this.io);
     }
 

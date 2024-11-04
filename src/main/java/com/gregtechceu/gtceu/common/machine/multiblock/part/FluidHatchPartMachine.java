@@ -69,11 +69,10 @@ public class FluidHatchPartMachine extends TieredIOPartMachine implements IMachi
 
     // The `Object... args` parameter is necessary in case a superclass needs to pass any args along to createTank().
     // We can't use fields here because those won't be available while createTank() is called.
-    public FluidHatchPartMachine(IMachineBlockEntity holder, int tier, IO io, int initialCapacity, int slots,
-                                 Object... args) {
+    public FluidHatchPartMachine(IMachineBlockEntity holder, int tier, IO io, int initialCapacity, int slots) {
         super(holder, tier, io);
         this.slots = slots;
-        this.tank = createTank(initialCapacity, slots, args);
+        this.tank = createTank(initialCapacity, slots);
         this.circuitInventory = createCircuitItemHandler(io);
     }
 
@@ -85,7 +84,7 @@ public class FluidHatchPartMachine extends TieredIOPartMachine implements IMachi
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableFluidTank createTank(int initialCapacity, int slots, Object... args) {
+    protected NotifiableFluidTank createTank(int initialCapacity, int slots) {
         return new NotifiableFluidTank(this, slots, getTankCapacity(initialCapacity, getTier()), io);
     }
 
@@ -93,8 +92,8 @@ public class FluidHatchPartMachine extends TieredIOPartMachine implements IMachi
         return initialCapacity * (1 << Math.min(9, tier));
     }
 
-    protected NotifiableItemStackHandler createCircuitItemHandler(Object... args) {
-        if (args.length > 0 && args[0] instanceof IO io && io == IO.IN) {
+    protected NotifiableItemStackHandler createCircuitItemHandler(IO io) {
+        if (io == IO.IN) {
             return new NotifiableItemStackHandler(this, 1, IO.IN, IO.NONE)
                     .setFilter(IntCircuitBehaviour::isIntegratedCircuit);
         } else {

@@ -40,8 +40,8 @@ public class MEInputHatchPartMachine extends MEHatchPartMachine implements IData
 
     protected ExportOnlyAEFluidList aeFluidHandler;
 
-    public MEInputHatchPartMachine(IMachineBlockEntity holder, Object... args) {
-        super(holder, IO.IN, args);
+    public MEInputHatchPartMachine(IMachineBlockEntity holder) {
+        super(holder, IO.IN);
     }
 
     /////////////////////////////////
@@ -54,7 +54,7 @@ public class MEInputHatchPartMachine extends MEHatchPartMachine implements IData
     }
 
     @Override
-    protected NotifiableFluidTank createTank(int initialCapacity, int slots, Object... args) {
+    protected NotifiableFluidTank createTank(int initialCapacity, int slots) {
         this.aeFluidHandler = new ExportOnlyAEFluidList(this, slots);
         return aeFluidHandler;
     }

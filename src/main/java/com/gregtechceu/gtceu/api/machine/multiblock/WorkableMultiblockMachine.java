@@ -105,12 +105,6 @@ public abstract class WorkableMultiblockMachine extends MultiblockControllerMach
         recipeLogic.inValid();
     }
 
-    /*
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new RecipeLogic(this);
-     * }
-     */
-
     //////////////////////////////////////
     // *** Multiblock LifeCycle ***//
     //////////////////////////////////////

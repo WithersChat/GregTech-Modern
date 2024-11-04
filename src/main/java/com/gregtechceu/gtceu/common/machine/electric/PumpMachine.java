@@ -87,9 +87,9 @@ public class PumpMachine extends TieredEnergyMachine implements IAutoOutputFluid
     @DropSaved
     protected final NotifiableFluidTank cache;
 
-    public PumpMachine(IMachineBlockEntity holder, int tier, Object... args) {
+    public PumpMachine(IMachineBlockEntity holder, int tier) {
         super(holder, tier);
-        this.cache = createCacheFluidHandler(args);
+        this.cache = createCacheFluidHandler();
     }
 
     //////////////////////////////////////
@@ -100,7 +100,7 @@ public class PumpMachine extends TieredEnergyMachine implements IAutoOutputFluid
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableFluidTank createCacheFluidHandler(Object... args) {
+    protected NotifiableFluidTank createCacheFluidHandler() {
         return new NotifiableFluidTank(this, 1, 16 * FluidType.BUCKET_VOLUME * Math.max(1, getTier()), IO.NONE, IO.OUT);
     }
 

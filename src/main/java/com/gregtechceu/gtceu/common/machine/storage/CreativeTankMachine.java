@@ -49,7 +49,7 @@ public class CreativeTankMachine extends QuantumTankMachine {
         super(holder, GTValues.MAX, -1);
     }
 
-    protected NotifiableFluidTank createCacheFluidHandler(Object... args) {
+    protected NotifiableFluidTank createCacheFluidHandler() {
         return new InfiniteTank(this);
     }
 

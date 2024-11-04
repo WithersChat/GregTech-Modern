@@ -151,12 +151,6 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
         return new NotifiableComputationContainer(this, IO.OUT, false);
     }
 
-    /*
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new RecipeLogic(this);
-     * }
-     */
-
     @Override
     public void onLoad() {
         super.onLoad();

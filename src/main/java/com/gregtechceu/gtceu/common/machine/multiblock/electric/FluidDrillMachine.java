@@ -50,13 +50,6 @@ public class FluidDrillMachine extends WorkableElectricMultiblockMachine impleme
         this.recipeLogic = new FluidDrillLogic(this);
     }
 
-    /*
-     * @Override
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new FluidDrillLogic(this);
-     * }
-     */
-
     @NotNull
     @Override
     public FluidDrillLogic getRecipeLogic() {

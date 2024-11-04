@@ -97,11 +97,11 @@ public class QuantumTankMachine extends TieredMachine implements IAutoOutputFlui
     @Setter
     private boolean isVoiding;
 
-    public QuantumTankMachine(IMachineBlockEntity holder, int tier, int maxStoredFluids, Object... args) {
+    public QuantumTankMachine(IMachineBlockEntity holder, int tier, int maxStoredFluids) {
         super(holder, tier);
         this.outputFacingFluids = getFrontFacing().getOpposite();
         this.maxStoredFluids = maxStoredFluids;
-        this.cache = createCacheFluidHandler(args);
+        this.cache = createCacheFluidHandler();
     }
 
     //////////////////////////////////////
@@ -113,7 +113,7 @@ public class QuantumTankMachine extends TieredMachine implements IAutoOutputFlui
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableFluidTank createCacheFluidHandler(Object... args) {
+    protected NotifiableFluidTank createCacheFluidHandler() {
         return new NotifiableFluidTank(this, 1, maxStoredFluids, IO.BOTH) {
 
             @Override

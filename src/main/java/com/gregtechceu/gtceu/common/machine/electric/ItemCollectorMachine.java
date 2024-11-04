@@ -132,7 +132,7 @@ public class ItemCollectorMachine extends TieredEnergyMachine
     @RequireRerender
     private boolean active = false;
 
-    public ItemCollectorMachine(IMachineBlockEntity holder, int tier, Object... ignoredArgs) {
+    public ItemCollectorMachine(IMachineBlockEntity holder, int tier) {
         super(holder, tier);
         this.inventorySize = INVENTORY_SIZES[Mth.clamp(getTier(), 0, INVENTORY_SIZES.length - 1)];
         this.energyPerTick = (long) BASE_EU_CONSUMPTION * (1L << (tier - 1));

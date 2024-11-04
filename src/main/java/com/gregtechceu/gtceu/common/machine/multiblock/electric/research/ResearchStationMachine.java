@@ -46,13 +46,6 @@ public class ResearchStationMachine extends WorkableElectricMultiblockMachine
         this.recipeLogic = new ResearchStationRecipeLogic(this);
     }
 
-    /*
-     * @Override
-     * protected RecipeLogic createRecipeLogic(Object... args) {
-     * return new ResearchStationRecipeLogic(this);
-     * }
-     */
-
     @Override
     public ResearchStationRecipeLogic getRecipeLogic() {
         return (ResearchStationRecipeLogic) super.getRecipeLogic();
