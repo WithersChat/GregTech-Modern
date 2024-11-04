@@ -56,10 +56,11 @@ public class SimpleSteamMachine extends SteamWorkableMachine implements IExhaust
     @Persisted
     private boolean needsVenting;
 
-    public SimpleSteamMachine(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
-        super(holder, isHighPressure, args);
-        this.importItems = createImportItemHandler(args);
-        this.exportItems = createExportItemHandler(args);
+    public SimpleSteamMachine(IMachineBlockEntity holder, boolean isHighPressure) {
+        super(holder, isHighPressure);
+        this.importItems = createImportItemHandler();
+        this.exportItems = createExportItemHandler();
+        this.steamTank = createSteamTank();
     }
 
     //////////////////////////////////////
@@ -72,15 +73,15 @@ public class SimpleSteamMachine extends SteamWorkableMachine implements IExhaust
     }
 
     @Override
-    protected NotifiableFluidTank createSteamTank(Object... args) {
+    protected NotifiableFluidTank createSteamTank() {
         return new NotifiableFluidTank(this, 1, 16 * FluidType.BUCKET_VOLUME, IO.IN);
     }
 
-    protected NotifiableItemStackHandler createImportItemHandler(@SuppressWarnings("unused") Object... args) {
+    protected NotifiableItemStackHandler createImportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxInputs(ItemRecipeCapability.CAP), IO.IN);
     }
 
-    protected NotifiableItemStackHandler createExportItemHandler(@SuppressWarnings("unused") Object... args) {
+    protected NotifiableItemStackHandler createExportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxOutputs(ItemRecipeCapability.CAP), IO.OUT);
     }
 

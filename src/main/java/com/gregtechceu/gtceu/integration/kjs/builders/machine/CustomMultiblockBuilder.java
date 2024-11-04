@@ -120,8 +120,8 @@ public class CustomMultiblockBuilder extends MultiblockMachineBuilder {
         return tieredBuilder(name, builders);
     }
 
-    public static MachineBuilder<MultiblockMachineDefinition> createPrimitiveMultiblock(String name, Object... args) {
-        return new CustomMultiblockBuilder(name, (holder) -> new PrimitiveFancyUIWorkableMachine(holder, args));
+    public static MachineBuilder<MultiblockMachineDefinition> createPrimitiveMultiblock(String name) {
+        return new CustomMultiblockBuilder(name, PrimitiveFancyUIWorkableMachine::new);
     }
 
     public static CustomMultiblockBuilder tieredBuilder(String name, CustomMultiblockBuilder[] builders) {

@@ -10,7 +10,6 @@ import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
 import com.gregtechceu.gtceu.api.machine.feature.ITieredMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
-import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
 import com.gregtechceu.gtceu.api.misc.EnergyContainerList;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
@@ -47,13 +46,16 @@ public class BedrockOreMinerMachine extends WorkableElectricMultiblockMachine im
 
     public BedrockOreMinerMachine(IMachineBlockEntity holder, int tier) {
         super(holder);
+        this.recipeLogic = new BedrockOreMinerLogic(this);
         this.tier = tier;
     }
 
-    @Override
-    protected RecipeLogic createRecipeLogic(Object... args) {
-        return new BedrockOreMinerLogic(this);
-    }
+    /*
+     * @Override
+     * protected RecipeLogic createRecipeLogic(Object... args) {
+     * return new BedrockOreMinerLogic(this);
+     * }
+     */
 
     @Override
     public BedrockOreMinerLogic getRecipeLogic() {

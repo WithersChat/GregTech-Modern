@@ -50,8 +50,8 @@ public class WorkableElectricMultiblockMachine extends WorkableMultiblockMachine
     @Getter
     protected int tier;
 
-    public WorkableElectricMultiblockMachine(IMachineBlockEntity holder, Object... args) {
-        super(holder, args);
+    public WorkableElectricMultiblockMachine(IMachineBlockEntity holder) {
+        super(holder);
     }
 
     //////////////////////////////////////

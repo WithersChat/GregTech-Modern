@@ -13,7 +13,6 @@ import com.gregtechceu.gtceu.api.machine.feature.*;
 import com.gregtechceu.gtceu.api.machine.steam.SteamWorkableMachine;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableFluidTank;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
-import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
 import com.gregtechceu.gtceu.common.item.PortableScannerBehavior;
 import com.gregtechceu.gtceu.common.machine.trait.miner.SteamMinerLogic;
 import com.gregtechceu.gtceu.utils.GTTransferUtils;
@@ -72,25 +71,18 @@ public class SteamMinerMachine extends SteamWorkableMachine implements IMiner, I
     protected ISubscription exportItemSubs;
 
     public SteamMinerMachine(IMachineBlockEntity holder, int speed, int maximumRadius, int fortune) {
-        super(holder, false, fortune, speed, maximumRadius);
+        super(holder, false);
         this.inventorySize = 4;
         this.energyPerTick = 16;
         this.importItems = createImportItemHandler();
         this.exportItems = createExportItemHandler();
+        this.recipeLogic = new SteamMinerLogic(this, fortune, speed, maximumRadius);
+        this.steamTank = createSteamTank();
     }
 
     //////////////////////////////////////
     // ***** Initialization ******//
     //////////////////////////////////////
-    @Override
-    protected @NotNull RecipeLogic createRecipeLogic(Object... args) {
-        if (args.length > 2 && args[args.length - 3] instanceof Integer fortune &&
-                args[args.length - 2] instanceof Integer speed && args[args.length - 1] instanceof Integer maxRadius) {
-            return new SteamMinerLogic(this, fortune, speed, maxRadius);
-        }
-        throw new IllegalArgumentException(
-                "MinerMachine need args [inventorySize, fortune, speed, maximumRadius] for initialization");
-    }
 
     @Override
     public SteamMinerLogic getRecipeLogic() {
@@ -98,7 +90,7 @@ public class SteamMinerMachine extends SteamWorkableMachine implements IMiner, I
     }
 
     @Override
-    protected NotifiableFluidTank createSteamTank(Object... args) {
+    protected NotifiableFluidTank createSteamTank() {
         return new NotifiableFluidTank(this, 1, 16 * FluidType.BUCKET_VOLUME, IO.IN);
     }
 

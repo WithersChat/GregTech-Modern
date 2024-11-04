@@ -27,13 +27,12 @@ public class DummyMachineBlockEntity implements IMachineBlockEntity {
     private final MachineDefinition definition;
 
     public DummyMachineBlockEntity(int tier, GTRecipeType type, Int2IntFunction tankScalingFunction,
-                                   Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy,
-                                   Object... args) {
+                                   Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy) {
         this.definition = MachineDefinition.createDefinition(GTCEu.id("dummy"));
         this.definition.setRecipeTypes(new GTRecipeType[] { type });
         this.definition.setTier(tier);
 
-        this.metaMachine = new DummyRecipeLogicMachine(this, tier, tankScalingFunction, capabilitiesProxy, args);
+        this.metaMachine = new DummyRecipeLogicMachine(this, tier, tankScalingFunction, capabilitiesProxy);
     }
 
     @Override

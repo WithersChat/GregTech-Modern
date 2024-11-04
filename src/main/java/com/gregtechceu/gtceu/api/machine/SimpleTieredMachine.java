@@ -106,13 +106,12 @@ public class SimpleTieredMachine extends WorkableTieredMachine implements IAutoO
     @Nullable
     protected ISubscription exportItemSubs, exportFluidSubs, energySubs;
 
-    public SimpleTieredMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction,
-                               Object... args) {
-        super(holder, tier, tankScalingFunction, args);
+    public SimpleTieredMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction) {
+        super(holder, tier, tankScalingFunction);
         this.outputFacingItems = hasFrontFacing() ? getFrontFacing().getOpposite() : Direction.UP;
         this.outputFacingFluids = outputFacingItems;
-        this.chargerInventory = createChargerItemHandler(args);
-        this.circuitInventory = createCircuitItemHandler(args);
+        this.chargerInventory = createChargerItemHandler();
+        this.circuitInventory = createCircuitItemHandler();
     }
 
     //////////////////////////////////////
@@ -123,7 +122,7 @@ public class SimpleTieredMachine extends WorkableTieredMachine implements IAutoO
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected CustomItemStackHandler createChargerItemHandler(Object... args) {
+    protected CustomItemStackHandler createChargerItemHandler() {
         var handler = new CustomItemStackHandler();
         handler.setFilter(item -> GTCapabilityHelper.getElectricItem(item) != null ||
                 (ConfigHolder.INSTANCE.compat.energy.nativeEUToPlatformNative &&
@@ -131,7 +130,7 @@ public class SimpleTieredMachine extends WorkableTieredMachine implements IAutoO
         return handler;
     }
 
-    protected NotifiableItemStackHandler createCircuitItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createCircuitItemHandler() {
         return new NotifiableItemStackHandler(this, 1, IO.IN, IO.NONE)
                 .setFilter(IntCircuitBehaviour::isIntegratedCircuit);
     }

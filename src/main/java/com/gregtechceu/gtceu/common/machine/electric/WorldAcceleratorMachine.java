@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.gregtechceu.gtceu.common.data.GTMachines.defaultTankSizeFunction;
-
 /**
  * @author h3tr
  * @date 2024/2/08
@@ -87,15 +85,16 @@ public class WorldAcceleratorMachine extends TieredEnergyMachine implements ICon
     private boolean active = false;
     private TickableSubscription tickSubs;
 
-    public WorldAcceleratorMachine(IMachineBlockEntity holder, int tier, Object... args) {
-        super(holder, tier, defaultTankSizeFunction, args);
+    public WorldAcceleratorMachine(IMachineBlockEntity holder, int tier) {
+        super(holder, tier);
         this.speed = (int) Math.pow(2, tier);
         this.successLimit = SUCCESS_LIMITS[tier - 1];
         this.randRange = (getTier() << 1) + 1;
+        this.energyContainer = createEnergyContainer();
     }
 
     @Override
-    protected @NotNull NotifiableEnergyContainer createEnergyContainer(Object @NotNull... args) {
+    protected @NotNull NotifiableEnergyContainer createEnergyContainer() {
         long tierVoltage = GTValues.V[getTier()];
         return new NotifiableEnergyContainer(this, tierVoltage * 256L, tierVoltage, 8, 0L, 0L);
     }

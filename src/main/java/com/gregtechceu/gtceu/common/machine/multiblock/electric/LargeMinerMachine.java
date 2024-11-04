@@ -13,7 +13,6 @@ import com.gregtechceu.gtceu.api.machine.feature.IDataInfoProvider;
 import com.gregtechceu.gtceu.api.machine.feature.multiblock.IMultiPart;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableMultiblockMachine;
-import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
 import com.gregtechceu.gtceu.api.misc.EnergyContainerList;
 import com.gregtechceu.gtceu.api.transfer.fluid.FluidHandlerList;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
@@ -72,23 +71,26 @@ public class LargeMinerMachine extends WorkableElectricMultiblockMachine
 
     public LargeMinerMachine(IMachineBlockEntity holder, int tier, int speed, int maximumChunkDiameter, int fortune,
                              int drillingFluidConsumePerTick) {
-        super(holder, fortune, speed, maximumChunkDiameter);
+        super(holder);
         this.tier = tier;
         this.drillingFluidConsumePerTick = drillingFluidConsumePerTick;
+        this.recipeLogic = new LargeMinerLogic(this, fortune, speed, maximumChunkDiameter * CHUNK_LENGTH / 2);
     }
 
     //////////////////////////////////////
     // ***** Initialization ******//
     //////////////////////////////////////
-    @Override
-    protected @NotNull RecipeLogic createRecipeLogic(Object... args) {
-        if (args[args.length - 3] instanceof Integer fortune && args[args.length - 2] instanceof Integer speed &&
-                args[args.length - 1] instanceof Integer maxRadius) {
-            return new LargeMinerLogic(this, fortune, speed, maxRadius * CHUNK_LENGTH / 2);
-        }
-        throw new IllegalArgumentException(
-                "MinerMachine need args [inventorySize, fortune, speed, maximumRadius] for initialization");
-    }
+    /*
+     * @Override
+     * protected @NotNull RecipeLogic createRecipeLogic(Object... args) {
+     * if (args[args.length - 3] instanceof Integer fortune && args[args.length - 2] instanceof Integer speed &&
+     * args[args.length - 1] instanceof Integer maxRadius) {
+     * return new LargeMinerLogic(this, fortune, speed, maxRadius * CHUNK_LENGTH / 2);
+     * }
+     * throw new IllegalArgumentException(
+     * "MinerMachine need args [inventorySize, fortune, speed, maximumRadius] for initialization");
+     * }
+     */
 
     @Override
     public @NotNull ManagedFieldHolder getFieldHolder() {

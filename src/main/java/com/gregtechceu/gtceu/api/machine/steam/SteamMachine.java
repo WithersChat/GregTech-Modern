@@ -30,12 +30,12 @@ public abstract class SteamMachine extends MetaMachine implements ITieredMachine
     @Getter
     public final boolean isHighPressure;
     @Persisted
-    public final NotifiableFluidTank steamTank;
+    protected NotifiableFluidTank steamTank;
 
-    public SteamMachine(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
+    public SteamMachine(IMachineBlockEntity holder, boolean isHighPressure) {
         super(holder);
         this.isHighPressure = isHighPressure;
-        this.steamTank = createSteamTank(args);
+        this.steamTank = createSteamTank();
         this.steamTank.setFilter(fluidStack -> fluidStack.getFluid().is(GTMaterials.Steam.getFluidTag()));
     }
 
@@ -52,5 +52,5 @@ public abstract class SteamMachine extends MetaMachine implements ITieredMachine
         return isHighPressure ? 1 : 0;
     }
 
-    protected abstract NotifiableFluidTank createSteamTank(Object... args);
+    protected abstract NotifiableFluidTank createSteamTank();
 }

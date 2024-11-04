@@ -16,7 +16,6 @@ import com.gregtechceu.gtceu.api.machine.WorkableTieredMachine;
 import com.gregtechceu.gtceu.api.machine.feature.IDataInfoProvider;
 import com.gregtechceu.gtceu.api.machine.feature.IFancyUIMachine;
 import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
-import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
 import com.gregtechceu.gtceu.api.transfer.item.CustomItemStackHandler;
 import com.gregtechceu.gtceu.common.data.GTMachines;
 import com.gregtechceu.gtceu.common.item.PortableScannerBehavior;
@@ -79,12 +78,12 @@ public class MinerMachine extends WorkableTieredMachine
     @Nullable
     protected ISubscription exportItemSubs, energySubs;
 
-    public MinerMachine(IMachineBlockEntity holder, int tier, int speed, int maximumRadius, int fortune,
-                        Object... args) {
-        super(holder, tier, GTMachines.defaultTankSizeFunction, args, (tier + 1) * (tier + 1), fortune, speed,
-                maximumRadius);
+    public MinerMachine(IMachineBlockEntity holder, int tier, int speed, int maximumRadius, int fortune) {
+        super(holder, tier, GTMachines.defaultTankSizeFunction);
         this.energyPerTick = GTValues.V[tier - 1];
         this.chargerInventory = createChargerItemHandler();
+        this.recipeLogic = new MinerLogic(this, fortune, speed, maximumRadius);
+        this.exportItems = createExportItemHandler((tier + 1) * (tier + 1));
     }
 
     //////////////////////////////////////
@@ -105,27 +104,12 @@ public class MinerMachine extends WorkableTieredMachine
     }
 
     @Override
-    protected NotifiableItemStackHandler createImportItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createImportItemHandler() {
         return new NotifiableItemStackHandler(this, 0, IO.NONE);
     }
 
-    @Override
-    protected NotifiableItemStackHandler createExportItemHandler(Object... args) {
-        if (args.length > 3 && args[args.length - 4] instanceof Integer invSize) {
-            return new NotifiableItemStackHandler(this, invSize, IO.OUT, IO.BOTH);
-        }
-        throw new IllegalArgumentException(
-                "MinerMachine need args [inventorySize, fortune, speed, maximumRadius] for initialization");
-    }
-
-    @Override
-    protected RecipeLogic createRecipeLogic(Object... args) {
-        if (args.length > 2 && args[args.length - 3] instanceof Integer fortune &&
-                args[args.length - 2] instanceof Integer speed && args[args.length - 1] instanceof Integer maxRadius) {
-            return new MinerLogic(this, fortune, speed, maxRadius);
-        }
-        throw new IllegalArgumentException(
-                "MinerMachine need args [inventorySize, fortune, speed, maximumRadius] for initialization");
+    protected NotifiableItemStackHandler createExportItemHandler(int invSize) {
+        return new NotifiableItemStackHandler(this, invSize, IO.OUT, IO.BOTH);
     }
 
     @Override

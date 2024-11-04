@@ -6,8 +6,8 @@ import com.gregtechceu.gtceu.common.data.GTMachines;
 
 public class RockCrusherMachine extends SimpleTieredMachine {
 
-    public RockCrusherMachine(IMachineBlockEntity holder, int tier, Object... args) {
-        super(holder, tier, GTMachines.defaultTankSizeFunction, args);
+    public RockCrusherMachine(IMachineBlockEntity holder, int tier) {
+        super(holder, tier, GTMachines.defaultTankSizeFunction);
     }
 
     @Override

@@ -16,6 +16,8 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraftforge.fluids.FluidType;
 
+import lombok.Getter;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -32,20 +34,24 @@ public class PrimitiveWorkableMachine extends WorkableMultiblockMachine
             PrimitiveWorkableMachine.class, WorkableMultiblockMachine.MANAGED_FIELD_HOLDER);
 
     @Persisted
-    public final NotifiableItemStackHandler importItems;
+    @Getter
+    protected NotifiableItemStackHandler importItems;
     @Persisted
-    public final NotifiableItemStackHandler exportItems;
+    @Getter
+    protected NotifiableItemStackHandler exportItems;
     @Persisted
-    public final NotifiableFluidTank importFluids;
+    @Getter
+    protected NotifiableFluidTank importFluids;
     @Persisted
-    public final NotifiableFluidTank exportFluids;
+    @Getter
+    protected NotifiableFluidTank exportFluids;
 
-    public PrimitiveWorkableMachine(IMachineBlockEntity holder, Object... args) {
-        super(holder, args);
-        this.importItems = createImportItemHandler(args);
-        this.exportItems = createExportItemHandler(args);
-        this.importFluids = createImportFluidHandler(args);
-        this.exportFluids = createExportFluidHandler(args);
+    public PrimitiveWorkableMachine(IMachineBlockEntity holder) {
+        super(holder);
+        this.importItems = createImportItemHandler();
+        this.exportItems = createExportItemHandler();
+        this.importFluids = createImportFluidHandler();
+        this.exportFluids = createExportFluidHandler();
     }
 
     //////////////////////////////////////
@@ -56,20 +62,20 @@ public class PrimitiveWorkableMachine extends WorkableMultiblockMachine
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableItemStackHandler createImportItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createImportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxInputs(ItemRecipeCapability.CAP), IO.IN);
     }
 
-    protected NotifiableItemStackHandler createExportItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createExportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxOutputs(ItemRecipeCapability.CAP), IO.OUT);
     }
 
-    protected NotifiableFluidTank createImportFluidHandler(Object... args) {
+    protected NotifiableFluidTank createImportFluidHandler() {
         return new NotifiableFluidTank(this, getRecipeType().getMaxInputs(FluidRecipeCapability.CAP),
                 32 * FluidType.BUCKET_VOLUME, IO.IN);
     }
 
-    protected NotifiableFluidTank createExportFluidHandler(Object... args) {
+    protected NotifiableFluidTank createExportFluidHandler() {
         return new NotifiableFluidTank(this, getRecipeType().getMaxOutputs(FluidRecipeCapability.CAP),
                 32 * FluidType.BUCKET_VOLUME, IO.OUT);
     }

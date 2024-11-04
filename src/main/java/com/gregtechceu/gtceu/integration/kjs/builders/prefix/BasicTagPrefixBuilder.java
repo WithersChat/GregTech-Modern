@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public class BasicTagPrefixBuilder extends TagPrefixBuilder {
 
     public BasicTagPrefixBuilder(ResourceLocation id, Object... args) {
-        super(id, args);
+        super(id);
     }
 
     @Override

@@ -47,10 +47,11 @@ public class TransformerMachine extends TieredEnergyMachine implements IControll
     @Getter
     private final int baseAmp;
 
-    public TransformerMachine(IMachineBlockEntity holder, int tier, int baseAmp, Object... args) {
-        super(holder, tier, baseAmp, args);
+    public TransformerMachine(IMachineBlockEntity holder, int tier, int baseAmp) {
+        super(holder, tier);
         this.isWorkingEnabled = true;
         this.baseAmp = baseAmp;
+        this.energyContainer = createEnergyContainer(baseAmp);
     }
 
     //////////////////////////////////////
@@ -67,9 +68,7 @@ public class TransformerMachine extends TieredEnergyMachine implements IControll
         updateEnergyContainer(newValue);
     }
 
-    @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-        var amp = (args.length > 0 && args[0] instanceof Integer a) ? a : 1;
+    protected NotifiableEnergyContainer createEnergyContainer(int amp) {
         NotifiableEnergyContainer energyContainer;
         long tierVoltage = GTValues.V[getTier()];
         // Since this.baseAmp is not yet initialized, we substitute with 1A as default

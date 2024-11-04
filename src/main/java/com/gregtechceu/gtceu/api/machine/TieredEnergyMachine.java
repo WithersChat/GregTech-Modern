@@ -34,13 +34,13 @@ public class TieredEnergyMachine extends TieredMachine implements ITieredMachine
             MetaMachine.MANAGED_FIELD_HOLDER);
     @Persisted
     @DescSynced
-    public final NotifiableEnergyContainer energyContainer;
+    protected NotifiableEnergyContainer energyContainer;
     protected TickableSubscription explosionSubs;
     protected ISubscription energyListener;
 
-    public TieredEnergyMachine(IMachineBlockEntity holder, int tier, Object... args) {
+    public TieredEnergyMachine(IMachineBlockEntity holder, int tier) {
         super(holder, tier);
-        energyContainer = createEnergyContainer(args);
+        energyContainer = createEnergyContainer();
     }
 
     //////////////////////////////////////
@@ -51,7 +51,7 @@ public class TieredEnergyMachine extends TieredMachine implements ITieredMachine
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
+    protected NotifiableEnergyContainer createEnergyContainer() {
         long tierVoltage = GTValues.V[tier];
         if (isEnergyEmitter()) {
             return NotifiableEnergyContainer.emitterContainer(this,

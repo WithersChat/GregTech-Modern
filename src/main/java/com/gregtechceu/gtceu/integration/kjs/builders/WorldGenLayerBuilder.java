@@ -22,7 +22,7 @@ public class WorldGenLayerBuilder extends BuilderBase<SimpleWorldGenLayer> {
     public transient List<ResourceLocation> dimensions = new ObjectArrayList<>();
 
     public WorldGenLayerBuilder(ResourceLocation id, Object... args) {
-        super(id, args);
+        super(id);
     }
 
     @Override

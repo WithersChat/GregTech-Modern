@@ -34,9 +34,10 @@ public class SimpleKineticElectricWorkableMachine extends SimpleTieredMachine im
     protected final NotifiableStressTrait stressTrait;
 
     public SimpleKineticElectricWorkableMachine(IMachineBlockEntity holder, int tier,
-                                                Int2IntFunction tankScalingFunction, Object... args) {
-        super(holder, tier, tankScalingFunction, args);
-        this.stressTrait = createStressTrait(args);
+                                                Int2IntFunction tankScalingFunction) {
+        super(holder, tier, tankScalingFunction);
+        this.stressTrait = createStressTrait();
+        this.energyContainer = createEnergyContainer();
     }
 
     //////////////////////////////////////
@@ -47,13 +48,13 @@ public class SimpleKineticElectricWorkableMachine extends SimpleTieredMachine im
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableStressTrait createStressTrait(Object... args) {
+    protected NotifiableStressTrait createStressTrait() {
         return new NotifiableStressTrait(this, IO.IN, IO.IN);
     }
 
     @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-        var container = super.createEnergyContainer(args);
+    protected NotifiableEnergyContainer createEnergyContainer() {
+        var container = super.createEnergyContainer();
         container.setSideInputCondition(dir -> dir == null || dir.getAxis() != getRotationFacing().getAxis());
         container.setCapabilityValidator(dir -> dir == null || dir.getAxis() != getRotationFacing().getAxis());
         return container;

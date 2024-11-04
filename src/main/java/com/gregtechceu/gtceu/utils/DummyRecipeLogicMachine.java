@@ -18,9 +18,8 @@ import java.util.List;
 public class DummyRecipeLogicMachine extends WorkableTieredMachine implements IRecipeLogicMachine {
 
     public DummyRecipeLogicMachine(IMachineBlockEntity be, int tier, Int2IntFunction tankScalingFunction,
-                                   Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy,
-                                   Object... args) {
-        super(be, tier, tankScalingFunction, args);
+                                   Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy) {
+        super(be, tier, tankScalingFunction);
         reinitializeCapabilities(capabilitiesProxy);
     }
 

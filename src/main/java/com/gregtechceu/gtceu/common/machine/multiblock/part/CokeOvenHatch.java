@@ -79,11 +79,11 @@ public class CokeOvenHatch extends MultiblockPartMachine {
     public void addedToController(IMultiController controller) {
         super.addedToController(controller);
         if (controller instanceof CokeOvenMachine cokeOven) {
-            outputInventorySubs = cokeOven.exportItems.addChangedListener(this::updateAutoIOSubscription);
-            outputTankSubs = cokeOven.exportFluids.addChangedListener(this::updateAutoIOSubscription);
-            inputInventory.setProxy(cokeOven.importItems);
-            outputInventory.setProxy(cokeOven.exportItems);
-            tank.setProxy(cokeOven.exportFluids);
+            outputInventorySubs = cokeOven.getExportItems().addChangedListener(this::updateAutoIOSubscription);
+            outputTankSubs = cokeOven.getExportFluids().addChangedListener(this::updateAutoIOSubscription);
+            inputInventory.setProxy(cokeOven.getImportItems());
+            outputInventory.setProxy(cokeOven.getExportItems());
+            tank.setProxy(cokeOven.getExportFluids());
         }
     }
 

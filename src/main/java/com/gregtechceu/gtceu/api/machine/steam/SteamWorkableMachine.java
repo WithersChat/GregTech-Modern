@@ -61,7 +61,7 @@ public abstract class SteamWorkableMachine extends SteamMachine
     @Getter
     @Persisted
     @DescSynced
-    public final RecipeLogic recipeLogic;
+    protected RecipeLogic recipeLogic;
     @Getter
     public final GTRecipeType[] recipeTypes;
     @Getter
@@ -82,11 +82,11 @@ public abstract class SteamWorkableMachine extends SteamMachine
     protected final Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy;
     protected final List<ISubscription> traitSubscriptions;
 
-    public SteamWorkableMachine(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
-        super(holder, isHighPressure, args);
+    public SteamWorkableMachine(IMachineBlockEntity holder, boolean isHighPressure) {
+        super(holder, isHighPressure);
         this.recipeTypes = getDefinition().getRecipeTypes();
         this.activeRecipeType = 0;
-        this.recipeLogic = createRecipeLogic(args);
+        this.recipeLogic = new RecipeLogic(this);
         this.capabilitiesProxy = Tables.newCustomTable(new EnumMap<>(IO.class), IdentityHashMap::new);
         this.traitSubscriptions = new ArrayList<>();
         this.outputFacing = hasFrontFacing() ? getFrontFacing().getOpposite() : Direction.UP;

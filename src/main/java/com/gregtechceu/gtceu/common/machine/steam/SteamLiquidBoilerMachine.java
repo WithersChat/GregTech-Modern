@@ -45,9 +45,9 @@ public class SteamLiquidBoilerMachine extends SteamBoilerMachine {
     @Persisted
     public final NotifiableFluidTank fuelTank;
 
-    public SteamLiquidBoilerMachine(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
-        super(holder, isHighPressure, args);
-        this.fuelTank = createFuelTank(args).setFilter(fluid -> FUEL_CACHE.computeIfAbsent(fluid.getFluid(), f -> {
+    public SteamLiquidBoilerMachine(IMachineBlockEntity holder, boolean isHighPressure) {
+        super(holder, isHighPressure);
+        this.fuelTank = createFuelTank().setFilter(fluid -> FUEL_CACHE.computeIfAbsent(fluid.getFluid(), f -> {
             if (isRemote()) return true;
             return recipeLogic.getRecipeManager().getAllRecipesFor(getRecipeType()).stream().anyMatch(recipe -> {
                 var list = recipe.inputs.getOrDefault(FluidRecipeCapability.CAP, Collections.emptyList());
@@ -68,7 +68,7 @@ public class SteamLiquidBoilerMachine extends SteamBoilerMachine {
         return MANAGED_FIELD_HOLDER;
     }
 
-    protected NotifiableFluidTank createFuelTank(Object... args) {
+    protected NotifiableFluidTank createFuelTank() {
         return new NotifiableFluidTank(this, 1, 16 * FluidType.BUCKET_VOLUME, IO.IN);
     }
 

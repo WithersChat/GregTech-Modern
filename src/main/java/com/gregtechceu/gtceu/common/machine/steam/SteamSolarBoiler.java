@@ -16,8 +16,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class SteamSolarBoiler extends SteamBoilerMachine {
 
-    public SteamSolarBoiler(IMachineBlockEntity holder, boolean isHighPressure, Object... args) {
-        super(holder, isHighPressure, args);
+    public SteamSolarBoiler(IMachineBlockEntity holder, boolean isHighPressure) {
+        super(holder, isHighPressure);
     }
 
     @Override

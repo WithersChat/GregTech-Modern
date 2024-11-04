@@ -45,9 +45,10 @@ public class ElectricGearBoxMachine extends TieredEnergyMachine implements IKine
     protected int currentAmps;
 
     public ElectricGearBoxMachine(IMachineBlockEntity holder, int tier, int maxAmps) {
-        super(holder, tier, maxAmps);
+        super(holder, tier);
         this.maxAmps = maxAmps;
         this.currentAmps = maxAmps;
+        this.energyContainer = createEnergyContainer(maxAmps);
     }
 
     //////////////////////////////////////
@@ -59,10 +60,8 @@ public class ElectricGearBoxMachine extends TieredEnergyMachine implements IKine
         return MANAGED_FIELD_HOLDER;
     }
 
-    @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
+    protected NotifiableEnergyContainer createEnergyContainer(int amps) {
         var tierVoltage = GTValues.V[tier];
-        var amps = (int) args[0];
         NotifiableEnergyContainer container;
         if (isEnergyEmitter()) {
             container = NotifiableEnergyContainer.emitterContainer(this, tierVoltage * 64L, tierVoltage, amps);

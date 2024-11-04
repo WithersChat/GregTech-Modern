@@ -61,12 +61,13 @@ public class BatteryBufferMachine extends TieredEnergyMachine
     @Persisted
     protected final CustomItemStackHandler batteryInventory;
 
-    public BatteryBufferMachine(IMachineBlockEntity holder, int tier, int inventorySize, Object... args) {
-        super(holder, tier, inventorySize);
+    public BatteryBufferMachine(IMachineBlockEntity holder, int tier, int inventorySize) {
+        super(holder, tier);
         this.isWorkingEnabled = true;
         this.inventorySize = inventorySize;
-        this.batteryInventory = createBatteryInventory(args);
+        this.batteryInventory = createBatteryInventory();
         this.batteryInventory.setOnContentsChanged(energyContainer::checkOutputSubscription);
+        this.energyContainer = new EnergyBatteryTrait(inventorySize);
     }
 
     //////////////////////////////////////
@@ -77,12 +78,14 @@ public class BatteryBufferMachine extends TieredEnergyMachine
         return MANAGED_FIELD_HOLDER;
     }
 
-    @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-        return new EnergyBatteryTrait((int) args[0]);
-    }
+    /*
+     * @Override
+     * protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
+     * return new EnergyBatteryTrait((int) args[0]);
+     * }
+     */
 
-    protected CustomItemStackHandler createBatteryInventory(Object... ignoredArgs) {
+    protected CustomItemStackHandler createBatteryInventory() {
         var handler = new CustomItemStackHandler(this.inventorySize) {
 
             @Override

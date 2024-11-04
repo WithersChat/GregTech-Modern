@@ -9,7 +9,7 @@ public abstract class BuilderBase<T> implements Supplier<T> {
     public ResourceLocation id;
     protected T value = null;
 
-    public BuilderBase(ResourceLocation id, Object... args) {
+    public BuilderBase(ResourceLocation id) {
         this.id = id;
     }
 

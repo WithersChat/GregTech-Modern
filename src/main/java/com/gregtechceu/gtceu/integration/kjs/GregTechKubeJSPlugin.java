@@ -104,34 +104,38 @@ public class GregTechKubeJSPlugin extends KubeJSPlugin {
         super.init();
         GTRegistryInfo.ELEMENT.addType("basic", ElementBuilder.class, ElementBuilder::new, true);
 
-        GTRegistryInfo.MATERIAL_ICON_SET.addType("basic", MaterialIconSetBuilder.class, MaterialIconSetBuilder::new,
+        GTRegistryInfo.MATERIAL_ICON_SET.addType("basic", MaterialIconSetBuilder.class,
+                (id, args) -> new MaterialIconSetBuilder(id),
                 true);
-        GTRegistryInfo.MATERIAL_ICON_TYPE.addType("basic", MaterialIconTypeBuilder.class, MaterialIconTypeBuilder::new,
+        GTRegistryInfo.MATERIAL_ICON_TYPE.addType("basic", MaterialIconTypeBuilder.class,
+                (id, args) -> new MaterialIconTypeBuilder(id),
                 true);
 
         GTRegistryInfo.MATERIAL.addType("basic", Material.Builder.class, Material.Builder::new, true);
 
-        GTRegistryInfo.RECIPE_TYPE.addType("basic", GTRecipeTypeBuilder.class, GTRecipeTypeBuilder::new, true);
+        GTRegistryInfo.RECIPE_TYPE.addType("basic", GTRecipeTypeBuilder.class,
+                (id, args) -> new GTRecipeTypeBuilder(id), true);
 
         GTRegistryInfo.MACHINE.addType("simple", SimpleMachineBuilder.class,
                 (id, args) -> SimpleMachineBuilder.create(id.getPath(), args), true);
         GTRegistryInfo.MACHINE.addType("custom", CustomTieredMachineBuilder.class,
                 (id, args) -> CustomTieredMachineBuilder.createAll(id.getPath(), args), false);
         GTRegistryInfo.MACHINE.addType("steam", SteamMachineBuilder.class,
-                (id, args) -> SteamMachineBuilder.createBoth(id.getPath(), args), false);
+                (id, args) -> SteamMachineBuilder.createBoth(id.getPath()), false);
         GTRegistryInfo.MACHINE.addType("generator", GeneratorBuilder.class,
                 (id, args) -> GeneratorBuilder.createAll(id.getPath(), args), false);
         GTRegistryInfo.MACHINE.addType("multiblock", CustomMultiblockBuilder.class,
                 (id, args) -> CustomMultiblockBuilder.createMultiblock(id.getPath(), args), false);
         GTRegistryInfo.MACHINE.addType("primitive", CustomMultiblockBuilder.class,
-                (id, args) -> CustomMultiblockBuilder.createPrimitiveMultiblock(id.getPath(), args), false);
+                (id, args) -> CustomMultiblockBuilder.createPrimitiveMultiblock(id.getPath()), false);
         GTRegistryInfo.MACHINE.addType("kinetic", KineticMachineBuilder.class,
                 (id, args) -> KineticMachineBuilder.createAll(id.getPath(), args), false);
 
         GTRegistryInfo.WORLD_GEN_LAYER.addType("basic", WorldGenLayerBuilder.class, WorldGenLayerBuilder::new, true);
 
         GTRegistryInfo.TAG_PREFIX.addType("basic", BasicTagPrefixBuilder.class, BasicTagPrefixBuilder::new, true);
-        GTRegistryInfo.TAG_PREFIX.addType("ore", OreTagPrefixBuilder.class, OreTagPrefixBuilder::new, false);
+        GTRegistryInfo.TAG_PREFIX.addType("ore", OreTagPrefixBuilder.class, (id, args) -> new OreTagPrefixBuilder(id),
+                false);
 
         GTRegistryInfo.DIMENSION_MARKER.addType("basic", DimensionMarker.Builder.class, DimensionMarker.Builder::new,
                 true);

@@ -41,7 +41,7 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     @Getter
     @Persisted
     @DescSynced
-    public final RecipeLogic recipeLogic;
+    protected RecipeLogic recipeLogic;
     @Getter
     public final GTRecipeType[] recipeTypes;
     @Getter
@@ -55,17 +55,17 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     @Setter
     private ICleanroomProvider cleanroom;
     @Persisted
-    public final NotifiableItemStackHandler importItems;
+    protected NotifiableItemStackHandler importItems;
     @Persisted
-    public final NotifiableItemStackHandler exportItems;
+    protected NotifiableItemStackHandler exportItems;
     @Persisted
-    public final NotifiableFluidTank importFluids;
+    protected NotifiableFluidTank importFluids;
     @Persisted
-    public final NotifiableFluidTank exportFluids;
+    protected NotifiableFluidTank exportFluids;
     @Persisted
-    public final NotifiableComputationContainer importComputation;
+    protected NotifiableComputationContainer importComputation;
     @Persisted
-    public final NotifiableComputationContainer exportComputation;
+    protected NotifiableComputationContainer exportComputation;
     @Getter
     protected final Table<IO, RecipeCapability<?>, List<IRecipeHandler<?>>> capabilitiesProxy;
     @Persisted
@@ -79,22 +79,22 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     protected boolean isMuffled;
     protected boolean previouslyMuffled = true;
 
-    public WorkableTieredMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction,
-                                 Object... args) {
-        super(holder, tier, args);
+    public WorkableTieredMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction) {
+        super(holder, tier);
         this.overclockTier = getMaxOverclockTier();
         this.recipeTypes = getDefinition().getRecipeTypes();
         this.activeRecipeType = 0;
         this.tankScalingFunction = tankScalingFunction;
         this.capabilitiesProxy = Tables.newCustomTable(new EnumMap<>(IO.class), IdentityHashMap::new);
         this.traitSubscriptions = new ArrayList<>();
-        this.recipeLogic = createRecipeLogic(args);
-        this.importItems = createImportItemHandler(args);
-        this.exportItems = createExportItemHandler(args);
-        this.importFluids = createImportFluidHandler(args);
-        this.exportFluids = createExportFluidHandler(args);
-        this.importComputation = createImportComputationContainer(args);
-        this.exportComputation = createExportComputationContainer(args);
+        this.recipeLogic = new RecipeLogic(this);
+        this.importItems = createImportItemHandler();
+        this.exportItems = createExportItemHandler();
+        this.importFluids = createImportFluidHandler();
+        this.exportFluids = createExportFluidHandler();
+        // this.importComputation = createImportComputationContainer();
+        this.exportComputation = createExportComputationContainer();
+        this.energyContainer = createEnergyContainer();
     }
 
     //////////////////////////////////////
@@ -106,7 +106,7 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
     }
 
     @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
+    protected NotifiableEnergyContainer createEnergyContainer() {
         long tierVoltage = GTValues.V[getTier()];
         if (isEnergyEmitter()) {
             return NotifiableEnergyContainer.emitterContainer(this,
@@ -125,39 +125,37 @@ public abstract class WorkableTieredMachine extends TieredEnergyMachine implemen
         }
     }
 
-    protected NotifiableItemStackHandler createImportItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createImportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxInputs(ItemRecipeCapability.CAP), IO.IN);
     }
 
-    protected NotifiableItemStackHandler createExportItemHandler(Object... args) {
+    protected NotifiableItemStackHandler createExportItemHandler() {
         return new NotifiableItemStackHandler(this, getRecipeType().getMaxOutputs(ItemRecipeCapability.CAP), IO.OUT);
     }
 
-    protected NotifiableFluidTank createImportFluidHandler(Object... args) {
+    protected NotifiableFluidTank createImportFluidHandler() {
         return new NotifiableFluidTank(this, getRecipeType().getMaxInputs(FluidRecipeCapability.CAP),
                 this.tankScalingFunction.apply(this.getTier()), IO.IN);
     }
 
-    protected NotifiableFluidTank createExportFluidHandler(Object... args) {
+    protected NotifiableFluidTank createExportFluidHandler() {
         return new NotifiableFluidTank(this, getRecipeType().getMaxOutputs(FluidRecipeCapability.CAP),
                 this.tankScalingFunction.apply(this.getTier()), IO.OUT);
     }
 
-    protected NotifiableComputationContainer createImportComputationContainer(Object... args) {
-        boolean transmitter = true;
-        if (args.length > 0 && args[args.length - 1] instanceof Boolean isTransmitter) {
-            transmitter = isTransmitter;
-        }
+    protected NotifiableComputationContainer createImportComputationContainer(boolean transmitter) {
         return new NotifiableComputationContainer(this, IO.IN, transmitter);
     }
 
-    protected NotifiableComputationContainer createExportComputationContainer(Object... args) {
+    protected NotifiableComputationContainer createExportComputationContainer() {
         return new NotifiableComputationContainer(this, IO.OUT, false);
     }
 
-    protected RecipeLogic createRecipeLogic(Object... args) {
-        return new RecipeLogic(this);
-    }
+    /*
+     * protected RecipeLogic createRecipeLogic(Object... args) {
+     * return new RecipeLogic(this);
+     * }
+     */
 
     @Override
     public void onLoad() {

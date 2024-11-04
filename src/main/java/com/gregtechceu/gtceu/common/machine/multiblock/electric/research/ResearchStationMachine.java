@@ -41,14 +41,17 @@ public class ResearchStationMachine extends WorkableElectricMultiblockMachine
     @Getter
     private IObjectHolder objectHolder;
 
-    public ResearchStationMachine(IMachineBlockEntity holder, Object... args) {
-        super(holder, args);
+    public ResearchStationMachine(IMachineBlockEntity holder) {
+        super(holder);
+        this.recipeLogic = new ResearchStationRecipeLogic(this);
     }
 
-    @Override
-    protected RecipeLogic createRecipeLogic(Object... args) {
-        return new ResearchStationRecipeLogic(this);
-    }
+    /*
+     * @Override
+     * protected RecipeLogic createRecipeLogic(Object... args) {
+     * return new ResearchStationRecipeLogic(this);
+     * }
+     */
 
     @Override
     public ResearchStationRecipeLogic getRecipeLogic() {

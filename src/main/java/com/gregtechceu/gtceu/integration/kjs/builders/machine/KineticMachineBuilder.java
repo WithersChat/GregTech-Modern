@@ -40,15 +40,12 @@ import static com.gregtechceu.gtceu.utils.FormattingUtil.toEnglishName;
 public class KineticMachineBuilder extends MachineBuilder<KineticMachineDefinition> {
 
     public transient Int2IntFunction tankScalingFunction; // reflected in MachineFunctionPresets. DO NOT CHANGE!
-    private final Object[] passedArguments;
 
-    public KineticMachineBuilder(String name, boolean isSource, int tier, Object... args) {
+    public KineticMachineBuilder(String name, boolean isSource, int tier) {
         super(GTRegistration.REGISTRATE, name, (id) -> new KineticMachineDefinition(id, isSource, GTValues.V[tier]),
-                (holder) -> new SimpleKineticElectricWorkableMachine(holder, tier, GTMachines.defaultTankSizeFunction,
-                        args),
+                (holder) -> new SimpleKineticElectricWorkableMachine(holder, tier, GTMachines.defaultTankSizeFunction),
                 KineticMachineBlock::new, MetaMachineItem::new, KineticMachineBlockEntity::create);
         this.tankScalingFunction = GTMachines.defaultTankSizeFunction;
-        this.passedArguments = args;
     }
 
     public KineticMachineBuilder isSource(boolean isSource) {
@@ -59,8 +56,8 @@ public class KineticMachineBuilder extends MachineBuilder<KineticMachineDefiniti
     @SuppressWarnings("unused") // Accessed via reflection
     public KineticMachineBuilder tankScalingFunction(Function<Object, Double> tankScalingFunction) {
         this.tankScalingFunction = tier -> tankScalingFunction.apply(tier).intValue();
-        this.metaMachine((holder) -> new SimpleKineticElectricWorkableMachine(holder, tier(), this.tankScalingFunction,
-                passedArguments));
+        this.metaMachine(
+                (holder) -> new SimpleKineticElectricWorkableMachine(holder, tier(), this.tankScalingFunction));
         return this;
     }
 

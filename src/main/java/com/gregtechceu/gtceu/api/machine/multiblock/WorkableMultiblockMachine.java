@@ -55,10 +55,11 @@ public abstract class WorkableMultiblockMachine extends MultiblockControllerMach
     @Getter
     @Setter
     private ICleanroomProvider cleanroom;
+    @Setter
     @Getter
     @Persisted
     @DescSynced
-    public final RecipeLogic recipeLogic;
+    protected RecipeLogic recipeLogic;
     @Getter
     private final GTRecipeType[] recipeTypes;
     @Getter
@@ -78,11 +79,11 @@ public abstract class WorkableMultiblockMachine extends MultiblockControllerMach
     @Getter
     protected LongSet activeBlocks;
 
-    public WorkableMultiblockMachine(IMachineBlockEntity holder, Object... args) {
+    public WorkableMultiblockMachine(IMachineBlockEntity holder) {
         super(holder);
         this.recipeTypes = getDefinition().getRecipeTypes();
         this.activeRecipeType = 0;
-        this.recipeLogic = createRecipeLogic(args);
+        this.recipeLogic = new RecipeLogic(this);
         this.capabilitiesProxy = Tables.newCustomTable(new EnumMap<>(IO.class), IdentityHashMap::new);
         this.traitSubscriptions = new ArrayList<>();
     }
@@ -104,9 +105,11 @@ public abstract class WorkableMultiblockMachine extends MultiblockControllerMach
         recipeLogic.inValid();
     }
 
-    protected RecipeLogic createRecipeLogic(Object... args) {
-        return new RecipeLogic(this);
-    }
+    /*
+     * protected RecipeLogic createRecipeLogic(Object... args) {
+     * return new RecipeLogic(this);
+     * }
+     */
 
     //////////////////////////////////////
     // *** Multiblock LifeCycle ***//

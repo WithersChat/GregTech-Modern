@@ -22,9 +22,9 @@ import static com.gregtechceu.gtceu.utils.FormattingUtil.toEnglishName;
  */
 public class SteamMachineBuilder extends MachineBuilder<MachineDefinition> {
 
-    public SteamMachineBuilder(String id, boolean isHighPressure, Object... args) {
+    public SteamMachineBuilder(String id, boolean isHighPressure) {
         super(GTRegistration.REGISTRATE, id, MachineDefinition::createDefinition,
-                holder -> new SimpleSteamMachine(holder, isHighPressure, args), MetaMachineBlock::new,
+                holder -> new SimpleSteamMachine(holder, isHighPressure), MetaMachineBlock::new,
                 MetaMachineItem::new, MetaMachineBlockEntity::createBlockEntity);
     }
 
@@ -37,30 +37,13 @@ public class SteamMachineBuilder extends MachineBuilder<MachineDefinition> {
                         GTCEu.id("block/machines/" + builder.id.getPath())));
     }
 
-    private static SteamMachineBuilder[] createBuilder(String name, boolean hasHighPressure, Object... args) {
-        SteamMachineBuilder lp = new SteamMachineBuilder("lp_" + name, false, args);
-        return hasHighPressure ? new SteamMachineBuilder[] { lp, new SteamMachineBuilder("hp_" + name, true, args) } :
-                new SteamMachineBuilder[] { lp };
+    private static SteamMachineBuilder[] createBuilder(String name) {
+        SteamMachineBuilder lp = new SteamMachineBuilder("lp_" + name, false);
+        return new SteamMachineBuilder[] { lp, new SteamMachineBuilder("hp_" + name, true) };
     }
 
-    public static MachineBuilder<MachineDefinition> createBoth(String name, Object... args) {
-        SteamMachineBuilder[] builders;
-        if (args.length > 0) {
-            Object[] argsCopy;
-            boolean hasHighPressure;
-            if (args[0] instanceof Boolean hasHP) {
-                argsCopy = MachineFunctionPresets.copyArgs(args, 1);
-                hasHighPressure = hasHP;
-            } else {
-                argsCopy = args;
-                hasHighPressure = true;
-            }
-            builders = createBuilder(name, hasHighPressure, argsCopy);
-        } else {
-            builders = createBuilder(name, true, args);
-        }
-
-        return MachineFunctionPresets.builder(name, builders, SteamMachineBuilder.class,
+    public static MachineBuilder<MachineDefinition> createBoth(String name) {
+        return MachineFunctionPresets.builder(name, createBuilder(name), SteamMachineBuilder.class,
                 MachineDefinition::createDefinition, MetaMachineBlock::new, MetaMachineBlockEntity::createBlockEntity);
     }
 }

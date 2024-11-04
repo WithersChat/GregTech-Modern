@@ -50,23 +50,22 @@ public class SimpleGeneratorMachine extends WorkableTieredMachine
     private final float hazardStrengthPerOperation;
 
     public SimpleGeneratorMachine(IMachineBlockEntity holder, int tier,
-                                  float hazardStrengthPerOperation, Int2IntFunction tankScalingFunction,
-                                  Object... args) {
-        super(holder, tier, tankScalingFunction, args);
+                                  float hazardStrengthPerOperation, Int2IntFunction tankScalingFunction) {
+        super(holder, tier, tankScalingFunction);
         this.hazardStrengthPerOperation = hazardStrengthPerOperation;
+        this.energyContainer = createEnergyContainer();
     }
 
-    public SimpleGeneratorMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction,
-                                  Object... args) {
-        this(holder, tier, 0.25f, tankScalingFunction, args);
+    public SimpleGeneratorMachine(IMachineBlockEntity holder, int tier, Int2IntFunction tankScalingFunction) {
+        this(holder, tier, 0.25f, tankScalingFunction);
     }
     //////////////////////////////////////
     // ***** Initialization ******//
     //////////////////////////////////////
 
     @Override
-    protected NotifiableEnergyContainer createEnergyContainer(Object... args) {
-        var energyContainer = super.createEnergyContainer(args);
+    protected NotifiableEnergyContainer createEnergyContainer() {
+        var energyContainer = super.createEnergyContainer();
         energyContainer.setSideOutputCondition(side -> !hasFrontFacing() || side == getFrontFacing());
         return energyContainer;
     }
