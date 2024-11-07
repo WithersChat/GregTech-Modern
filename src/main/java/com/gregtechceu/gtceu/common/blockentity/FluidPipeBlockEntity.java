@@ -228,11 +228,8 @@ public class FluidPipeBlockEntity extends PipeBlockEntity<FluidPipeType, FluidPi
         // Now distribute
         for (FluidTransaction transaction : tanks) {
             if (availableCapacity > maxAmount) {
-                transaction.amount = Mth.floor(transaction.amount * maxAmount / availableCapacity); // Distribute fluids
-                                                                                                    // based on
-                                                                                                    // percentage
-                                                                                                    // available space
-                                                                                                    // at destination
+                // Distribute fluids based on percentage available space at destination
+                transaction.amount = Mth.floor(transaction.amount * maxAmount / availableCapacity);
             }
             if (transaction.amount == 0) {
                 if (tank.getFluidAmount() <= 0) break; // If there is no more stored fluid, stop transferring to prevent
